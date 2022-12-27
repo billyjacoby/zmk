@@ -1,3 +1,35 @@
+if(CONFIG_ZMK_DISPLAY)
+  target_sources_ifdef(CONFIG_CUSTOM_WIDGET_BATTERY_STATUS app PRIVATE widgets/battery_status.c)
+
+  add_subdirectory_ifdef(CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM  widgets/icons)
+endif()
+
+zephyr_library()
+
+if(CONFIG_ZMK_DISPLAY)
+  if(CONFIG_CUSTOM_WIDGET_BATTERY_STATUS)
+    zephyr_library_sources(widgets/icons/batt_100.c)
+    zephyr_library_sources(widgets/icons/batt_100_chg.c)
+    zephyr_library_sources(widgets/icons/batt_75.c)
+    zephyr_library_sources(widgets/icons/batt_75_chg.c)
+    zephyr_library_sources(widgets/icons/batt_50.c)
+    zephyr_library_sources(widgets/icons/batt_50_chg.c)
+    zephyr_library_sources(widgets/icons/batt_25.c)
+    zephyr_library_sources(widgets/icons/batt_25_chg.c)
+    zephyr_library_sources(widgets/icons/batt_5.c)
+    zephyr_library_sources(widgets/icons/batt_5_chg.c)
+    zephyr_library_sources(widgets/icons/batt_0.c)
+    zephyr_library_sources(widgets/icons/batt_0_chg.c)
+  endif()
+endif()
+
+zephyr_library_include_directories(${ZEPHYR_LVGL_MODULE_DIR})
+zephyr_library_include_directories(${ZEPHYR_BASE}/lib/gui/lvgl/)
+zephyr_library_sources_ifdef(CONFIG_ZMK_DISPLAY custom_status_screen.c)
+zephyr_library_sources(${ZEPHYR_BASE}/misc/empty_file.c)
+zephyr_library_include_directories(${CMAKE_SOURCE_DIR}/include)
+zephyr_library_include_directories(${ZEPHYR_BASE}/drivers)
+
 # Copyright (c) 2020 The ZMK Contributors
 # SPDX-License-Identifier: MIT
 if(CONFIG_ZMK_DISPLAY)
