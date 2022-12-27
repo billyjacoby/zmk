@@ -27,7 +27,7 @@ endchoice
 
 if ZMK_DISPLAY
 
-config SPI
+config I2C
 	default y
 
 config SSD1306
