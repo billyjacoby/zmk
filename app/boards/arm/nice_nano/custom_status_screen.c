@@ -70,12 +70,12 @@ lv_obj_t *zmk_display_status_screen() {
     lv_img_set_src(LayersHeading, &layers2);
 #endif
 
-#if !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
-    lv_obj_t *zenlogo_icon;
-    zenlogo_icon = lv_img_create(screen, NULL);
-    lv_img_set_src(zenlogo_icon, &zenlogo);
-    lv_obj_align(zenlogo_icon, NULL, LV_ALIGN_IN_BOTTOM_MID, 2, -5);
-#endif
+// #if !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+//     lv_obj_t *zenlogo_icon;
+//     zenlogo_icon = lv_img_create(screen, NULL);
+//     lv_img_set_src(zenlogo_icon, &zenlogo);
+//     lv_obj_align(zenlogo_icon, NULL, LV_ALIGN_IN_BOTTOM_MID, 2, -5);
+// #endif
 
     // lv_task_handler();
     lv_refr_now(NULL);
