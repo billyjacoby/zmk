@@ -10,8 +10,6 @@
 #include "widgets/output_status.h"
 #include "widgets/layer_status.h"
 #include "custom_status_screen.h"
-#include <src/lv_themes/lv_theme.h>
-
 
 #include <logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
