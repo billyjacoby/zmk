@@ -1,5 +1,21 @@
 # Copyright (c) 2020 The ZMK Contributors
 # SPDX-License-Identifier: MIT
+if(CONFIG_ZMK_DISPLAY)
+  if(CONFIG_ZMK_WIDGET_BATTERY_STATUS)
+    zephyr_library_sources(widgets/icons/batt_100.c)
+    zephyr_library_sources(widgets/icons/batt_100_chg.c)
+    zephyr_library_sources(widgets/icons/batt_75.c)
+    zephyr_library_sources(widgets/icons/batt_75_chg.c)
+    zephyr_library_sources(widgets/icons/batt_50.c)
+    zephyr_library_sources(widgets/icons/batt_50_chg.c)
+    zephyr_library_sources(widgets/icons/batt_25.c)
+    zephyr_library_sources(widgets/icons/batt_25_chg.c)
+    zephyr_library_sources(widgets/icons/batt_5.c)
+    zephyr_library_sources(widgets/icons/batt_5_chg.c)
+    zephyr_library_sources(widgets/icons/batt_0.c)
+    zephyr_library_sources(widgets/icons/batt_0_chg.c)
+  endif()
+endif()
 
 target_sources_ifdef(CONFIG_ZMK_WIDGET_BATTERY_STATUS app PRIVATE battery_status.c)
 target_sources_ifdef(CONFIG_ZMK_WIDGET_OUTPUT_STATUS app PRIVATE output_status.c)
