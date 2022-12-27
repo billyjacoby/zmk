@@ -1,13 +1,11 @@
 if(CONFIG_ZMK_DISPLAY)
-  target_sources_ifdef(CONFIG_CUSTOM_WIDGET_BATTERY_STATUS app PRIVATE widgets/battery_status.c)
-
+  target_sources_ifdef(CONFIG_ZMK_WIDGET_BATTERY_STATUS app PRIVATE widgets/battery_status.c)
   add_subdirectory_ifdef(CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM  widgets/icons)
 endif()
 
 zephyr_library()
 
 if(CONFIG_ZMK_DISPLAY)
-  if(CONFIG_CUSTOM_WIDGET_BATTERY_STATUS)
     zephyr_library_sources(widgets/icons/batt_100.c)
     zephyr_library_sources(widgets/icons/batt_100_chg.c)
     zephyr_library_sources(widgets/icons/batt_75.c)
@@ -20,7 +18,6 @@ if(CONFIG_ZMK_DISPLAY)
     zephyr_library_sources(widgets/icons/batt_5_chg.c)
     zephyr_library_sources(widgets/icons/batt_0.c)
     zephyr_library_sources(widgets/icons/batt_0_chg.c)
-  endif()
 endif()
 
 zephyr_library_include_directories(${ZEPHYR_LVGL_MODULE_DIR})
