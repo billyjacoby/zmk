@@ -83,7 +83,6 @@ lv_obj_t *zmk_display_status_screen() {
     // lv_task_handler();
     lv_refr_now(NULL);
     // display_blanking_off(display_dev);
-    lv_img_set_angle(screen, 900)
 
     return screen;
 }
