@@ -76,12 +76,14 @@ lv_obj_t *zmk_display_status_screen() {
     lv_img_set_src(zenlogo_icon, &zenlogo);
     //? CHANGES IMAGE ALIGNMENT
     lv_obj_align(zenlogo_icon, NULL, LV_ALIGN_IN_BOTTOM_MID, 2, 3);
+    //? doesn't actually rotate it for whatever reason
     // lv_img_set_angle(zenlogo_icon, 900);
 #endif
 
     // lv_task_handler();
     lv_refr_now(NULL);
     // display_blanking_off(display_dev);
+    lv_img_set_angle(screen, 900)
 
     return screen;
 }
