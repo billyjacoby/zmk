@@ -74,7 +74,8 @@ lv_obj_t *zmk_display_status_screen() {
     lv_obj_t *zenlogo_icon;
     zenlogo_icon = lv_img_create(screen, NULL);
     lv_img_set_src(zenlogo_icon, &zenlogo);
-    lv_obj_align(zenlogo_icon, NULL, LV_ALIGN_IN_BOTTOM_MID, 2, 0);
+    //? CHANGES IMAGE ALIGNMENT
+    lv_obj_align(zenlogo_icon, NULL, LV_ALIGN_IN_BOTTOM_MID, 2, 3);
     // lv_img_set_angle(zenlogo_icon, 900);
 #endif
 
