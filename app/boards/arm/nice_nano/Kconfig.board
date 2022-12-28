@@ -10,11 +10,3 @@ config BOARD_NICE_NANO
 config BOARD_NICE_NANO_V2
 	bool "nice!nano v2"
 	depends on SOC_NRF52840_QIAA
-
-config BOARD_CORNEISH_ZEN_V2_LEFT
-	bool "corneish zen left v2"
-	depends on SOC_NRF52840_QIAA
-
-config BOARD_CORNEISH_ZEN_V2_RIGHT
-	bool "corneish zen right v2"
-	depends on SOC_NRF52840_QIAA
