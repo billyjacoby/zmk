@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2020 The ZMK Contributors
  *
+ * Copyright (c) 2021 Darryl deHaan
  * SPDX-License-Identifier: MIT
+ *
  */
 
 #include <kernel.h>
@@ -11,7 +12,7 @@
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #include <zmk/display.h>
-#include <zmk/display/widgets/output_status.h>
+#include "output_status.h"
 #include <zmk/event_manager.h>
 #include <zmk/events/usb_conn_state_changed.h>
 #include <zmk/events/ble_active_profile_changed.h>
@@ -19,6 +20,21 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/usb.h>
 #include <zmk/ble.h>
 #include <zmk/endpoints.h>
+
+LV_IMG_DECLARE(bluetooth_advertising);
+LV_IMG_DECLARE(bluetooth_connected_right);
+LV_IMG_DECLARE(bluetooth_disconnected_right);
+LV_IMG_DECLARE(bluetooth_connected_1);
+LV_IMG_DECLARE(bluetooth_connected_2);
+LV_IMG_DECLARE(bluetooth_connected_3);
+LV_IMG_DECLARE(bluetooth_connected_4);
+LV_IMG_DECLARE(bluetooth_connected_5);
+LV_IMG_DECLARE(bluetooth_advertising_1);
+LV_IMG_DECLARE(bluetooth_advertising_2);
+LV_IMG_DECLARE(bluetooth_advertising_3);
+LV_IMG_DECLARE(bluetooth_advertising_4);
+LV_IMG_DECLARE(bluetooth_advertising_5);
+LV_IMG_DECLARE(USB_connected);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
@@ -38,30 +54,56 @@ static struct output_status_state get_state(const zmk_event_t *_eh) {
     ;
 }
 
-static void set_status_symbol(lv_obj_t *label, struct output_status_state state) {
-    char text[10] = {};
-
+static void set_status_symbol(lv_obj_t *icon, struct output_status_state state) {
     switch (state.selected_endpoint) {
     case ZMK_ENDPOINT_USB:
-        strcat(text, LV_SYMBOL_USB);
+        lv_img_set_src(icon, &USB_connected);
         break;
     case ZMK_ENDPOINT_BLE:
         if (state.active_profile_bonded) {
             if (state.active_profile_connected) {
-                snprintf(text, sizeof(text), LV_SYMBOL_WIFI " %i " LV_SYMBOL_OK,
-                         state.active_profile_index + 1);
+                // sprintf(text, LV_SYMBOL_BLUETOOTH "%i " LV_SYMBOL_OK, active_profile_index);
+                switch (state.active_profile_index) {
+                case 0:
+                    lv_img_set_src(icon, &bluetooth_connected_1);
+                    break;
+                case 1:
+                    lv_img_set_src(icon, &bluetooth_connected_2);
+                    break;
+                case 2:
+                    lv_img_set_src(icon, &bluetooth_connected_3);
+                    break;
+                case 3:
+                    lv_img_set_src(icon, &bluetooth_connected_4);
+                    break;
+                case 4:
+                    lv_img_set_src(icon, &bluetooth_connected_5);
+                    break;
+                }
             } else {
-                snprintf(text, sizeof(text), LV_SYMBOL_WIFI " %i " LV_SYMBOL_CLOSE,
-                         state.active_profile_index + 1);
+                lv_img_set_src(icon, &bluetooth_disconnected_right);
             }
         } else {
-            snprintf(text, sizeof(text), LV_SYMBOL_WIFI " %i " LV_SYMBOL_SETTINGS,
-                     state.active_profile_index + 1);
+            switch (state.active_profile_index) {
+            case 0:
+                lv_img_set_src(icon, &bluetooth_advertising_1);
+                break;
+            case 1:
+                lv_img_set_src(icon, &bluetooth_advertising_2);
+                break;
+            case 2:
+                lv_img_set_src(icon, &bluetooth_advertising_3);
+                break;
+            case 3:
+                lv_img_set_src(icon, &bluetooth_advertising_4);
+                break;
+            case 4:
+                lv_img_set_src(icon, &bluetooth_advertising_5);
+                break;
+            }
         }
         break;
     }
-
-    lv_label_set_text(label, text);
 }
 
 static void output_status_update_cb(struct output_status_state state) {
@@ -81,7 +123,7 @@ ZMK_SUBSCRIPTION(widget_output_status, zmk_ble_active_profile_changed);
 #endif
 
 int zmk_widget_output_status_init(struct zmk_widget_output_status *widget, lv_obj_t *parent) {
-    widget->obj = lv_label_create(parent, NULL);
+    widget->obj = lv_img_create(parent, NULL);
 
     lv_obj_set_size(widget->obj, 40, 15);
 
