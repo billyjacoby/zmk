@@ -1,5 +1,5 @@
 right:
-west build -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right -DZMK_CONFIG="/workspaces/zmk/configs/corne/config"
+west build -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right -DZMK_CONFIG="/workspaces/zmk/zmk-config/config"
 
 left:
-west build -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left -DZMK_CONFIG="/workspaces/zmk/configs/corne/config"
+west build -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left -DZMK_CONFIG="/workspaces/zmk/zmk-config/config"

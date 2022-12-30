@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2020 The ZMK Contributors
  *
+ * Copyright (c) 2021 Darryl deHaan
  * SPDX-License-Identifier: MIT
+ *
  */
 
 #include <kernel.h>
@@ -11,7 +12,8 @@
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #include <zmk/display.h>
-#include <zmk/display/widgets/battery_status.h>
+#include "battery_status.h"
+#include <src/lv_themes/lv_theme.h>
 #include <zmk/usb.h>
 #include <zmk/events/usb_conn_state_changed.h>
 #include <zmk/event_manager.h>
@@ -26,30 +28,37 @@ struct battery_status_state {
 #endif
 };
 
-static void set_battery_symbol(lv_obj_t *label, struct battery_status_state state) {
-    char text[8] = {};
+LV_IMG_DECLARE(batt_100);
+LV_IMG_DECLARE(batt_100_chg);
+LV_IMG_DECLARE(batt_75);
+LV_IMG_DECLARE(batt_75_chg);
+LV_IMG_DECLARE(batt_50);
+LV_IMG_DECLARE(batt_50_chg);
+LV_IMG_DECLARE(batt_25);
+LV_IMG_DECLARE(batt_25_chg);
+LV_IMG_DECLARE(batt_5);
+LV_IMG_DECLARE(batt_5_chg);
+LV_IMG_DECLARE(batt_0);
+LV_IMG_DECLARE(batt_0_chg);
 
+static void set_battery_symbol(lv_obj_t *icon, struct battery_status_state state) {
     uint8_t level = state.level;
 
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
-    if (state.usb_present) {
-        strcpy(text, LV_SYMBOL_CHARGE " ");
+    if (level > 95) {
+        lv_img_set_src(icon, state.usb_present ? &batt_100_chg : &batt_100);
+    } else if (level > 74) {
+        lv_img_set_src(icon, state.usb_present ? &batt_75_chg : &batt_75);
+    } else if (level > 49) {
+        lv_img_set_src(icon, state.usb_present ? &batt_50_chg : &batt_50);
+    } else if (level > 24) {
+        lv_img_set_src(icon, state.usb_present ? &batt_25_chg : &batt_25);
+    } else if (level > 5) {
+        lv_img_set_src(icon, state.usb_present ? &batt_5_chg : &batt_5);
+    } else {
+        lv_img_set_src(icon, state.usb_present ? &batt_0_chg : &batt_0);
     }
 #endif /* IS_ENABLED(CONFIG_USB_DEVICE_STACK) */
-
-    if (level > 95) {
-        strcat(text, LV_SYMBOL_BATTERY_FULL);
-    } else if (level > 65) {
-        strcat(text, LV_SYMBOL_BATTERY_3);
-    } else if (level > 35) {
-        strcat(text, LV_SYMBOL_BATTERY_2);
-    } else if (level > 5) {
-        strcat(text, LV_SYMBOL_BATTERY_1);
-    } else {
-        strcat(text, LV_SYMBOL_BATTERY_EMPTY);
-    }
-    lv_label_set_text(label, text);
-    lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
 }
 
 void battery_status_update_cb(struct battery_status_state state) {
@@ -75,13 +84,11 @@ ZMK_SUBSCRIPTION(widget_battery_status, zmk_usb_conn_state_changed);
 #endif /* IS_ENABLED(CONFIG_USB_DEVICE_STACK) */
 
 int zmk_widget_battery_status_init(struct zmk_widget_battery_status *widget, lv_obj_t *parent) {
-    widget->obj = lv_label_create(parent, NULL);
-
-    lv_obj_set_size(widget->obj, 43, 15);
+    widget->obj = lv_img_create(parent, NULL);
 
     sys_slist_append(&widgets, &widget->node);
-
     widget_battery_status_init();
+
     return 0;
 }
 
